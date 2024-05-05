@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  dev-db:
+    image: postgres:latest
+    ports:
+      - "5434:5432"  # Adiciona aspas e corrige o espaço
+    environment:
+      - POSTGRES_DB=nest
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+    networks:
+      - nestproject
+
+networks:
+  nestproject:  # Garante uma boa indentação
