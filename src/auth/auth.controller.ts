@@ -11,7 +11,7 @@ export class AuthController{
     signup
     (@Body() dto:AuthDto){//parseintpipe transforma para numero
         console.log(dto);
-        return this.authService.signup();
+        return this.authService.signup(dto);
     }
 
     @Post('signin')

@@ -17,11 +17,14 @@ model User{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email String
+  email String @unique
   hash String
 
   firstname String?// é uma opção se quer colocar ou não
   lastname String? //é uma opção se quer colocar ou não
+
+  @@map("users")// para mapear nomes de tabelas e colunas no banco de dados para nomes diferentes no modelo do Prisma.
+  bookmarks BookMark[]
 }
  
  model BookMark{
@@ -32,4 +35,13 @@ model User{
   title String
   description String?//opcional
   link String
+
+  userID Int//Este é um campo em um modelo que armazena uma chave estrangeira que referencia o ID 
+  //de um usuário. Este campo é usado para estabelecer uma relação entre este modelo e o modelo User.
+
+  user User @relation(fields: [userID],references: [id])
+  //define a relação entre o modelo atual e o modelo User. O @relation é usado para especificar que o campo userID neste modelo é uma chave estrangeira 
+  //que referencia o campo id no modelo User
+
+  @@map("bookmarks")// para mapear nomes de tabelas e colunas no banco de dados para nomes diferentes no modelo do Prisma.
  }
