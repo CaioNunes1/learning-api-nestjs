@@ -3,11 +3,13 @@ import { PrismaService } from "src/prisma/prisma.service";
 import * as argon from 'argon2'
 import { AuthDto } from "./dto";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { JwtService } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()// é usado para indicar que uma classe pode ter suas dependências automaticamente 
 //injetadas pelo sistema de Injeção de Dependência (DI) do framework. 
 export class AuthService{
-    constructor(private prisma:PrismaService){}
+    constructor(private prisma:PrismaService, private jwt:JwtService, private config:ConfigService){}
     async signup(dto:AuthDto){
         //generate hash password
         try{
@@ -22,10 +24,8 @@ export class AuthService{
             
         })
         //save the new user in the bd
-
-        delete user.hash;
-        //return the saved user
-        return user;
+        console.log('usuário logado')
+        return this.signToken(user.id,user.email);//retornando o token dizendo que o usuário existe e logou
         }
         catch(error){
             if(error instanceof PrismaClientKnownRequestError){
@@ -58,7 +58,29 @@ export class AuthService{
         if(!pwMatches) throw new ForbiddenException('Password incorrect');
 
         //send back de user
-        delete user.hash;
-        return user;
+
+        return this.signToken(user.id,user.email);//retornando o token dizendo que o usuário existe e logou
+    }
+
+    async signToken(userId:number,email:string) :Promise<{access_token:string}>{//vai retornar um token dizendo que o usuário foi criado
+
+        const payload={
+            sub:userId,
+            email,
+        };
+
+        const secret=this.config.get('JWT_SECRET')
+
+        console.log('usuário logado')
+        const token= await this.jwt.signAsync(payload,{
+            expiresIn:'15m',//quando damos o token ao user, o usuário pode fazer ações na nossa plataforma que estamos contruindo por 15 min, como 
+            //por exemplo o sigaa
+            secret: secret// basicamente a senha
+        })
+
+     return {
+        access_token:token,
+     };
+        
     }
 }
