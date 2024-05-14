@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { Body, Controller, } from "@nestjs/common";
+import { Body, Controller,HttpCode, HttpStatus } from "@nestjs/common";
 import { Post } from '@nestjs/common';
 import { AuthDto } from './dto';
 
@@ -7,13 +7,15 @@ import { AuthDto } from './dto';
 export class AuthController{
     constructor(private authService:AuthService){}//uma instancia de AuthService
     
+    
     @Post('signup')
     signup
-    (@Body() dto:AuthDto){//parseintpipe transforma para numero
+    (@Body() dto:AuthDto){
         console.log(dto);
         return this.authService.signup(dto);
     }
 
+    @HttpCode(HttpStatus.OK)//o ok significa o 200, verifica o email e password passados e retorna o ok
     @Post('signin')
     signin(@Body() dto:AuthDto){
         console.log(dto);
