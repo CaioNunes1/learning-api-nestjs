@@ -11,14 +11,22 @@ export class AuthController{
     @Post('signup')
     async signup
     (@Body() dto:AuthDto){
-        console.log(dto);
-        return this.authService.signup(dto);
+            console.log(dto);
+            return this.authService.signup(dto);
+        
     }
 
     @HttpCode(HttpStatus.OK)//o ok significa o 200, verifica o email e password passados e retorna o ok
     @Post('signin')
     async signin(@Body() dto:AuthDto){
         console.log(dto);
-        return this.authService.signin(dto);
+        try {
+            const token = await this.authService.signin(dto);
+            // Retorne o token como parte da resposta
+            return { token };
+          } catch (error) {
+            // Lidere com qualquer erro aqui
+            throw error;
+          }
     }
 }

@@ -3,9 +3,13 @@ import { Get } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
+import { Query } from '@nestjs/common';
+import { UserService} from './user.service'
 
 @Controller('users')
 export class UserController {
+    constructor(private readonly userService:UserService){}
+
     @UseGuards(JwtGuard)
     @Get('me')
     getMe(@GetUser('id')user:User){
@@ -16,4 +20,13 @@ export class UserController {
 editUser(){
 
 }
+
+    @UseGuards(JwtGuard)
+    @Get('search')
+    async searchUser(@Query('query') query:string):Promise<User[]>{
+        return this.userService.searchUsers(query);
+    }
+
+
+
 }
