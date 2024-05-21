@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable,  } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as argon from 'argon2'
-import { AuthDto } from "./dto";
+import { AuthDtoSignIn,AuthDtoSignUp } from "./dto";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
@@ -10,7 +10,7 @@ import { ConfigService } from "@nestjs/config";
 //injetadas pelo sistema de Injeção de Dependência (DI) do framework. 
 export class AuthService{
     constructor(private prisma:PrismaService, private jwt:JwtService, private config:ConfigService){}
-    async signup(dto:AuthDto){
+    async signup(dto:AuthDtoSignUp){
         //generate hash password
         try{
             const hash= await argon.hash(dto.password);
@@ -18,6 +18,7 @@ export class AuthService{
         const user=await this.prisma.user.create({
             data:{
                 email:dto.email,
+                firstname:dto.name,
                 hash,
             },
             
@@ -36,7 +37,7 @@ export class AuthService{
             throw error
         }
     }
-    async signin(dto:AuthDto){
+    async signin(dto:AuthDtoSignIn){
 
         //find the user by email
         const user= await this.prisma.user.findUnique({

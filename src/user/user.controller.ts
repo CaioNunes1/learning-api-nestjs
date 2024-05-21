@@ -21,9 +21,9 @@ editUser(){
 
 }
 
-    @UseGuards(JwtGuard)
+    
     @Get('search')
-    async searchUser(@Query('query') query:string):Promise<User[]>{
+    async searchUser(@Query('email') query:string):Promise<User[]>{
         return this.userService.searchUsers(query);
     }
 
