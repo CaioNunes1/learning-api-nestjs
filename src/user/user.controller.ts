@@ -23,8 +23,8 @@ editUser(){
 
     
     @Get('search')
-    async searchUser(@Query('email') query:string):Promise<User[]>{
-        return this.userService.searchUsers(query);
+    async searchUser(@Query('email') email:string):Promise<User[]>{
+        return this.userService.searchUsers(email);
     }
 
 

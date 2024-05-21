@@ -6,23 +6,13 @@ import { User } from '@prisma/client';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async searchUsers(query: string): Promise<User[]> {
+  async searchUsers(email: string): Promise<User[]> {
     return this.prisma.user.findMany({
       where: {
-        OR: [
-          {
             email: {
-              contains: query,
-              mode: 'insensitive', // Case-insensitive search
-            },
-          },
-          {
-            firstname: {
-              contains: query,
-              mode: 'insensitive', // Case-insensitive search
-            },
-          },
-        ],
+              contains: email,
+              mode: 'insensitive', // A busca é insensível a maiúsculas e minúsculas
+            },        
       },
     });
   }
