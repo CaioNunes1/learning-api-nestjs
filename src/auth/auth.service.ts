@@ -25,7 +25,7 @@ export class AuthService{
             
         })
         //save the new user in the bd
-        console.log('usuário logado')
+        
         return this.signToken(user.id,user.email);//retornando o token dizendo que o usuário existe e logou
         }
         catch(error){
@@ -38,11 +38,12 @@ export class AuthService{
         }
     }
     async signin(dto:AuthDtoSignIn){
-
         //find the user by email
+        //const hash= await argon.hash(dto.password);
         const user= await this.prisma.user.findUnique({
             where:{
                 email:dto.email,
+                //hash está recebendo o hash 
             },
         });
 
@@ -50,6 +51,7 @@ export class AuthService{
         
         //if the user dont exists throw execption
         if(!user) throw new ForbiddenException('Credentials incorrect')
+            console.log(dto);
         
         //compare passwords
         const pwMatches = await argon.verify(
@@ -64,14 +66,14 @@ export class AuthService{
     }
 
     async signToken(userId:number,email:string) :Promise<{access_token:string}>{//vai retornar um token dizendo que o usuário foi criado
+        const secret=this.config.get('JWT_SECRET')
 
         const payload={
             sub:userId,
             email,
         };
 
-        const secret=this.config.get('JWT_SECRET')
-
+        
         console.log('usuário logado')
         const token= await this.jwt.signAsync(payload,{
             expiresIn:'15m',//quando damos o token ao user, o usuário pode fazer ações na nossa plataforma que estamos contruindo por 15 min, como 

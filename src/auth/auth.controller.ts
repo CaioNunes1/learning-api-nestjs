@@ -7,7 +7,7 @@ import { AuthDtoSignIn, AuthDtoSignUp } from './dto';
 export class AuthController{
     constructor(private authService:AuthService){}//uma instancia de AuthService
     
-    
+    @HttpCode(HttpStatus.OK)
     @Post('signup')
     async signup
     (@Body() dto:AuthDtoSignUp){
@@ -19,7 +19,7 @@ export class AuthController{
     @HttpCode(HttpStatus.OK)//o ok significa o 200, verifica o email e password passados e retorna o ok
     @Post('signin')
     async signin(@Body() dto:AuthDtoSignIn){
-        console.log(dto);
+        
         try {
             return this.authService.signin(dto);
             // Retorne o token como parte da resposta

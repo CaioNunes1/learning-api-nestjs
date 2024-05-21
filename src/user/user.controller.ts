@@ -5,6 +5,7 @@ import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { Query } from '@nestjs/common';
 import { UserService} from './user.service'
+import { HttpCode,HttpStatus } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
@@ -21,7 +22,7 @@ editUser(){
 
 }
 
-    
+    @HttpCode(HttpStatus.OK)
     @Get('search')
     async searchUser(@Query('email') email:string):Promise<User[]>{
         return this.userService.searchUsers(email);
