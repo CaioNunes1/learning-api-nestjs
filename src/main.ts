@@ -6,7 +6,7 @@ import * as cors from 'cors';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cors({
-    origin: 'http://localhost:5173', // Defina a origem permitida
+    origin: 'https://cadastro-front-end-com-backend-nestjs.netlify.app/', // Defina a origem permitida
     credentials: true, // Permita o compartilhamento de credenciais
   }));
   app.useGlobalPipes(new ValidationPipe(
