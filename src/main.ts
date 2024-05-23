@@ -15,7 +15,7 @@ async function bootstrap() {
     whitelist: true,
   }));
 
-  await app.listen(process.env.PORT || 3333); // Use a porta do ambiente ou 3333 como padrão
+  await app.listen(process.env.PORT || 'https://learning-api-nestjs.vercel.app/'); // Use a porta do ambiente ou 3333 como padrão
 }
 
 bootstrap();
