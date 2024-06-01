@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const whitelist = [
-    'https://cadastro-front-end-com-backend-nestjs.netlify.app',
+    'https://cadastro-front-end-com-backend-nestjs.netlify.app/',
     'http://localhost:5174',
   ];
 
