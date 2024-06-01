@@ -8,7 +8,7 @@ async function bootstrap() {
 
   const whitelist = [
     'https://cadastro-front-end-com-backend-nestjs.netlify.app/',
-    'http://localhost:5174',
+    //'http://localhost:5174',
   ];
 
   app.enableCors({
