@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['https://cadastro-front-end-com-backend-nestjs.netlify.app', 'http://localhost:5174'],
+    origin: ['https://cadastro-front-end-com-backend-nestjs.netlify.app', 'http://localhost:5173'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
